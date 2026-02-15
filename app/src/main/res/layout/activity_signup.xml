@@ -24,6 +24,14 @@
             android:orientation="vertical"
             android:padding="28dp">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+
+
+
             <TextView
                 android:text="Create Account"
                 android:textSize="22sp"
@@ -71,13 +79,24 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <AutoCompleteTextView
+                android:id="@+id/etRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select Role" />
+
             <com.google.android.material.button.MaterialButton
+
+
                 android:id="@+id/btnSignup"
-                android:text="Sign Up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:cornerRadius="12dp"/>
+                android:text="Sign Up"
+                app:cornerRadius="12dp" />
 
         </LinearLayout>
 

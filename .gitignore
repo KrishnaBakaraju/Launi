@@ -13,3 +13,15 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# new
+# Firebase config
+app/google-services.json
+
+
+# Build folders
+
+/app/build
+
+
+

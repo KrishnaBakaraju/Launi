@@ -6,6 +6,15 @@
         android:allowBackup="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".UserDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignupActivity"
             android:exported="false" />
         <activity
