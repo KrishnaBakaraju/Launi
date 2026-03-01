@@ -44,23 +44,38 @@ class MainActivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
 
-                        val userId = auth.currentUser!!.uid
+                        val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
                         val db = FirebaseFirestore.getInstance()
 
                         db.collection("users")
-                            .document(userId)
+                            .document(uid)
                             .get()
-                            .addOnSuccessListener { document ->
+                            .addOnSuccessListener { doc ->
 
-                                val role = document.getString("role")
+                                if (!doc.exists()) {
+                                    Toast.makeText(this, "User record missing", Toast.LENGTH_SHORT).show()
+                                    return@addOnSuccessListener
+                                }
+
+                                val role = doc.getString("role")
 
                                 if (role == "admin") {
                                     startActivity(Intent(this, AdminDashboardActivity::class.java))
-                                } else {
-                                    startActivity(Intent(this, UserDashboardActivity::class.java))
+                                    finish()
                                 }
+                                else if (role == "student") {
 
-                                finish()
+                                    val name = doc.getString("name")
+
+                                    if (name == null) {
+                                        // Student profile incomplete
+                                        startActivity(Intent(this, CompleteProfileActivity::class.java))
+                                    } else {
+                                        startActivity(Intent(this, UserDashboardActivity::class.java))
+                                    }
+
+                                    finish()
+                                }
                             }
                     }
                     else {

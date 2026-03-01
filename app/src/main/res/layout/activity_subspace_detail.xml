@@ -41,5 +41,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Admin Requests"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStudentRequests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student Join Requests"
+        android:layout_marginBottom="16dp"/>
 
 </LinearLayout>

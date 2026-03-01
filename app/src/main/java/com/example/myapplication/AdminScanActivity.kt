@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,12 +39,19 @@ class AdminScanActivity : AppCompatActivity() {
         barcodeLauncher.launch(options)
     }
 
-    private fun handleQR(qrContent: String) {
+    private fun handleQR(qrContent: String?) {
 
-        val parts = qrContent.split(":")
+        if (qrContent.isNullOrBlank()) {
+            Toast.makeText(this, "Invalid QR", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        val cleaned = qrContent.trim()
+        val parts = cleaned.split(":")
 
         if (parts.size != 2) {
-            Toast.makeText(this, "Invalid QR", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Invalid QR format", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -57,20 +65,19 @@ class AdminScanActivity : AppCompatActivity() {
             return
         }
 
-        // 🔥 Continue normal flow
         verifyStudent(qrSubspaceId, userId)
     }
 
     private fun verifyStudent(subspaceId: String, userId: String) {
 
-        db.collection("student_subspaces")
-            .whereEqualTo("userId", userId)
-            .whereEqualTo("subspaceId", subspaceId)
-            .whereEqualTo("status", "approved")
-            .get()
-            .addOnSuccessListener { docs ->
+        val docId = "${userId}_${subspaceId}"
 
-                if (docs.isEmpty) {
+        db.collection("student_subspaces")
+            .document(docId)
+            .get()
+            .addOnSuccessListener { doc ->
+
+                if (!doc.exists()) {
                     Toast.makeText(this, "Student not approved", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
@@ -82,20 +89,21 @@ class AdminScanActivity : AppCompatActivity() {
     private fun checkActiveLaundry(subspaceId: String, userId: String) {
 
         db.collection("laundry_records")
-            .whereEqualTo("studentId", userId)
+            .whereEqualTo("userId", userId)
             .whereEqualTo("subspaceId", subspaceId)
             .whereEqualTo("status", "processing")
             .get()
             .addOnSuccessListener { docs ->
-
+                Log.d("SCAN_DEBUG", "Docs found: ${docs.size()}")
                 if (docs.isEmpty) {
-                    // No active laundry → Accept form
+
                     val intent = Intent(this, AcceptLaundryActivity::class.java)
-                    intent.putExtra("studentId", userId)
+                    intent.putExtra("userId", userId)
                     intent.putExtra("subspaceId", subspaceId)
                     startActivity(intent)
+
                 } else {
-                    // Active laundry exists → Mark Complete screen
+
                     val recordId = docs.documents[0].id
 
                     val intent = Intent(this, LaundryDetailsActivity::class.java)

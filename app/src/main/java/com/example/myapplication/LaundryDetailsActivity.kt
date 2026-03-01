@@ -60,7 +60,7 @@ class LaundryDetailsActivity : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
-                studentId = doc.getString("studentId") ?: ""
+                studentId = doc.getString("userId") ?: ""
                 val clothesCount = doc.getLong("clothesCount") ?: 0
                 val createdAt = doc.getLong("createdAt") ?: 0L
 

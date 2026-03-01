@@ -44,5 +44,11 @@ class SubspaceDetailActivity : AppCompatActivity() {
             intent.putExtra("status", "completed")
             startActivity(intent)
         }
+
+        findViewById<MaterialButton>(R.id.btnStudentRequests).setOnClickListener {
+            val intent = Intent(this, StudentRequestsActivity::class.java)
+            intent.putExtra("subspaceId", subspaceId)
+            startActivity(intent)
+        }
     }
 }

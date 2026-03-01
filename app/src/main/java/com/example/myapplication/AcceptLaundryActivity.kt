@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,11 +34,27 @@ class AcceptLaundryActivity : AppCompatActivity() {
             finish()
             return
         }
+        val name = intent.getStringExtra("name")
+        val regNo = intent.getStringExtra("regNo")
+        val phone = intent.getStringExtra("phone")
+        val userId = FirebaseAuth.getInstance().currentUser!!.uid
 
-        tvName = findViewById(R.id.tvName)
-        tvRegNo = findViewById(R.id.tvRegNo)
-        tvPhone = findViewById(R.id.tvPhone)
-        tvDate = findViewById(R.id.tvDate)
+
+        findViewById<TextView>(R.id.tvName).text = name
+        findViewById<TextView>(R.id.tvRegNo).text = regNo
+        findViewById<TextView>(R.id.tvPhone).text = phone
+
+        val currentDate = SimpleDateFormat(
+            "dd MMM yyyy, hh:mm a",
+            Locale.getDefault()
+        ).format(Date())
+
+        findViewById<TextView>(R.id.tvDate).text = currentDate
+
+        //tvName = findViewById(R.id.tvName)
+        //tvRegNo = findViewById(R.id.tvRegNo)
+        //tvPhone = findViewById(R.id.tvPhone)
+        //tvDate = findViewById(R.id.tvDate)
         etClothes = findViewById(R.id.etClothes)
         btnAccept = findViewById(R.id.btnAccept)
 
@@ -45,6 +62,21 @@ class AcceptLaundryActivity : AppCompatActivity() {
         loadStudentDetails()
 
         btnAccept.setOnClickListener {
+            val clothesCount = etClothes.text.toString().toLong()
+
+            val data = hashMapOf(
+                "userId" to userId,
+                "subspaceId" to subspaceId,
+                "name" to name,
+                "regNo" to regNo,
+                "phone" to phone,
+                "clothesCount" to clothesCount,
+                "status" to "processing",
+                "createdAt" to System.currentTimeMillis()
+            )
+
+            db.collection("laundry_records")
+                .add(data)
             createLaundryRecord()
         }
     }
