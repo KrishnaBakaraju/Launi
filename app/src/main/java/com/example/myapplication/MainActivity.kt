@@ -14,11 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
-        //if user already logged in
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            startActivity(Intent(this, DashboardActivity::class.java))
-            finish()
-        }
+
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

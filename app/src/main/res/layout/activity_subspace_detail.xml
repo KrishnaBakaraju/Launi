@@ -8,24 +8,38 @@
     android:padding="20dp">
 
     <TextView
+        android:id="@+id/tvSubspaceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Student Dashboard"
         android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginBottom="24dp"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnJoinSubspace"
+        android:id="@+id/btnScan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Join Subspace"
+        android:text="Scan Laundry"
         android:layout_marginBottom="16dp"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnMySubspaces"
+        android:id="@+id/btnProcessing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="My Subspaces"/>
+        android:text="View Processing"
+        android:layout_marginBottom="16dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCompleted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Completed"
+        android:layout_marginBottom="16dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRequests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Admin Requests"/>
 
 </LinearLayout>
