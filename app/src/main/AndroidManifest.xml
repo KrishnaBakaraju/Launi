@@ -8,6 +8,9 @@
         android:allowBackup="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".AdminLaundryListActivity"
+            android:exported="false" />
+        <activity
             android:name=".CompleteProfileActivity"
             android:exported="false" />
         <activity

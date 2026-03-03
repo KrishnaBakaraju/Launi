@@ -16,15 +16,23 @@ class AdminScanActivity : AppCompatActivity() {
 
     private val barcodeLauncher = registerForActivityResult(ScanContract()) { result ->
         if (result.contents != null) {
-            handleQR(result.contents)
+            handleQR(result.contents!!)
         } else {
             Toast.makeText(this, "Scan Cancelled", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         currentSubspaceId = intent.getStringExtra("subspaceId") ?: ""
+
+        if (currentSubspaceId.isEmpty()) {
+            Toast.makeText(this, "Invalid Subspace", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
 
         startScanner()
     }
@@ -39,13 +47,7 @@ class AdminScanActivity : AppCompatActivity() {
         barcodeLauncher.launch(options)
     }
 
-    private fun handleQR(qrContent: String?) {
-
-        if (qrContent.isNullOrBlank()) {
-            Toast.makeText(this, "Invalid QR", Toast.LENGTH_SHORT).show()
-            finish()
-            return
-        }
+    private fun handleQR(qrContent: String) {
 
         val cleaned = qrContent.trim()
         val parts = cleaned.split(":")
@@ -94,18 +96,14 @@ class AdminScanActivity : AppCompatActivity() {
             .whereEqualTo("status", "processing")
             .get()
             .addOnSuccessListener { docs ->
-                Log.d("SCAN_DEBUG", "Docs found: ${docs.size()}")
-                if (docs.isEmpty) {
 
+                if (docs.isEmpty) {
                     val intent = Intent(this, AcceptLaundryActivity::class.java)
                     intent.putExtra("userId", userId)
                     intent.putExtra("subspaceId", subspaceId)
                     startActivity(intent)
-
                 } else {
-
                     val recordId = docs.documents[0].id
-
                     val intent = Intent(this, LaundryDetailsActivity::class.java)
                     intent.putExtra("recordId", recordId)
                     startActivity(intent)

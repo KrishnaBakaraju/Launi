@@ -63,11 +63,11 @@ class MainActivity : AppCompatActivity() {
                                     startActivity(Intent(this, AdminDashboardActivity::class.java))
                                     finish()
                                 }
-                                else if (role == "student") {
+                                else if (role == "user") {
 
-                                    val name = doc.getString("name")
+                                    val phone = doc.getString("phone")
 
-                                    if (name == null) {
+                                    if (phone == null) {
                                         // Student profile incomplete
                                         startActivity(Intent(this, CompleteProfileActivity::class.java))
                                     } else {
